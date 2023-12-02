@@ -22,8 +22,8 @@ public class FileService {
         // после загрузки файла мы его сохраняем такой, какой он есть
         var clone = newImage.clone();
         var bytes = clone.extractBytesForSave();
-        fileRepository.save(bytes);
         imageService.setImage(newImage);
+        fileRepository.save(bytes);
     }
 
     // у копии image переводим байты в rbg

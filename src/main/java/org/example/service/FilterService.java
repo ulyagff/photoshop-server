@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.converters.ColorSpace;
+import org.example.filters.Channel;
 import org.example.filters.OneChannelFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +13,23 @@ public class FilterService {
     ConverterService converterService;
 
     public byte[] oneChannelFilter(int channel) throws CloneNotSupportedException {
+        ImageService.getInstance().getImage().setChannel(Channel.fromInteger(channel));
         var image = ImageService.getInstance().getImage().clone();
-        if (image.getColorSpace() == ColorSpace.CMY || image.getColorSpace() == ColorSpace.RGB
-                || ((image.getColorSpace() == ColorSpace.HSV || image.getColorSpace() == ColorSpace.HSL)
-                && channel == 3)  ) {
+        if (image.getColorSpace() == ColorSpace.CMY || image.getColorSpace() == ColorSpace.RGB) {
             OneChannelFilter.applyFilterZero(image, channel);
         }
-        if (image.getColorSpace() == ColorSpace.CMY || image.getColorSpace() == ColorSpace.RGB) {
-
+        if (image.getColorSpace() == ColorSpace.YCoCg) {
+            OneChannelFilter.applyFilter(image, channel);
+        }
+        if (image.getColorSpace() == ColorSpace.HSV) {
+            OneChannelFilter.applyFilterHSV(image, channel);
+        }
+        if (image.getColorSpace() == ColorSpace.HSL) {
+            OneChannelFilter.applyFilterHSL(image, channel);
+        }
+        if (image.getColorSpace() == ColorSpace.YCbCr601 || image.getColorSpace() == ColorSpace.YCbCr709
+        ) {
+            OneChannelFilter.applyFilterYCbCr(image, channel);
         }
         var imageRgb = converterService.convertToNewColorSpace(image, ColorSpace.RGB);
         return imageRgb.extractBytesForShow();

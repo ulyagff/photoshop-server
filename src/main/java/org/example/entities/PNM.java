@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.converters.ColorSpace;
 import org.example.exceptions.ReadFileException;
+import org.example.filters.Channel;
+import org.example.filters.OneChannelFilter;
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ public class PNM implements Image, Cloneable {
     private int width;
     private double[] pixels;
     private ColorSpace colorSpace;
+    private Channel channel;
     private ImageTypes type;
     private double gamma;
     private double outputGamma;
@@ -24,6 +27,7 @@ public class PNM implements Image, Cloneable {
         this.type = type;
         this.outputGamma = gamma;
         this.gamma = gamma;
+        this.channel = Channel.NONE;
         int startPosition = setHeader(byteStream);
         convert(startPosition, byteStream);
         disableGamma(); //учитывая гамму, преобразовали пиксели к линейному ввиду
@@ -96,6 +100,9 @@ public class PNM implements Image, Cloneable {
 
     public byte[] extractBytesForSave() {
         applyGamma(gamma);
+        if (channel != Channel.NONE) {
+            OneChannelFilter.applyFilter(this, Channel.toInteger(channel));
+        }
         return extractBytes();
     }
 

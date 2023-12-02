@@ -38,9 +38,9 @@ public class ConverterHSV {
             }
 
             v = cmax;
-            hsvPixels[startIndex] = h;
-            hsvPixels[startIndex + 1] = s;
-            hsvPixels[startIndex + 2] = v;
+            hsvPixels[startIndex] = h * 255;
+            hsvPixels[startIndex + 1] = s * 255;
+            hsvPixels[startIndex + 2] = v * 255;
         }
 
         image.setColorSpace(ColorSpace.HSV);

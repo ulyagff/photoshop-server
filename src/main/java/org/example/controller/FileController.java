@@ -30,7 +30,7 @@ public class FileController {
         }
     }
 
-    @GetMapping(value = "/getPath")
+    @GetMapping(value = "/download")
     @ResponseBody
     public String saveFile() {
         try {
@@ -40,6 +40,12 @@ public class FileController {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+        return service.pathToFile();
+    }
+
+    @GetMapping(value = "/getPath")
+    @ResponseBody
+    public String getPath() {
         return service.pathToFile();
     }
 }

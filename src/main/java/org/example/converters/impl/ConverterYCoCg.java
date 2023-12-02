@@ -10,13 +10,18 @@ public class ConverterYCoCg {
 
         for (int i = 0; i < rgbPixels.length / 3; i++) {
             int startIndex = i * 3;
-            double rChannel = rgbPixels[startIndex];
-            double gChannel = rgbPixels[startIndex + 1];
-            double bChannel = rgbPixels[startIndex + 2];
+            double rChannel = rgbPixels[startIndex] / 255;
+            double gChannel = rgbPixels[startIndex + 1] / 255;
+            double bChannel = rgbPixels[startIndex + 2] / 255;
 
             pixels[startIndex] =  0.25 * rChannel + 0.5*gChannel + 0.25*bChannel;
             pixels[startIndex + 1] = 0.5 * rChannel - 0.5*bChannel;
             pixels[startIndex + 2] = -0.25 * rChannel + 0.5*gChannel - 0.25*bChannel;
+
+            pixels[startIndex] *= 255;
+            pixels[startIndex + 1] *= 255;
+            pixels[startIndex + 2] *= 255;
+
 
         }
 
@@ -31,13 +36,13 @@ public class ConverterYCoCg {
 
         for (int i = 0; i < pixels.length / 3; i++) {
             int startIndex = i * 3;
-            double yChannel = pixels[startIndex];
-            double coChannel = pixels[startIndex + 1];
-            double cgChannel = pixels[startIndex + 2];
+            double yChannel = pixels[startIndex] / 255;
+            double coChannel = pixels[startIndex + 1] / 255;
+            double cgChannel = pixels[startIndex + 2] / 255;
 
-            rgbPixels[startIndex] = yChannel + coChannel - cgChannel;
-            rgbPixels[startIndex + 1] = yChannel + cgChannel;
-            rgbPixels[startIndex + 2] = yChannel - coChannel - cgChannel;
+            rgbPixels[startIndex] = (yChannel + coChannel - cgChannel) * 255;
+            rgbPixels[startIndex + 1] = (yChannel + cgChannel) * 255;
+            rgbPixels[startIndex + 2] = (yChannel - coChannel - cgChannel) * 255;
 
         }
 

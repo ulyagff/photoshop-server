@@ -1,6 +1,5 @@
 package org.example.converters.impl;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.converters.ColorSpace;
 import org.example.entities.PNM;
 
