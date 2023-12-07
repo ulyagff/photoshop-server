@@ -1,0 +1,3 @@
+[submodule "photoshop-client"]
+	path = photoshop-client
+	url = https://github.com/anasteshap/photoshop-client
