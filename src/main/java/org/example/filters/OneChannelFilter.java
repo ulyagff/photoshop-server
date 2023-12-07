@@ -26,23 +26,59 @@ public class OneChannelFilter {
     }
 
     //создание p5 изображения при одном фильтре
+//    public static void applyFilter(PNM image, int channel) {
+//        if (channel < 1 || channel > 3) {
+//            throw FilterException.invalidFilterNumber();
+//        }
+//
+//        var newPixels = new double[image.getPixels().length / 3];
+//        int pointer = 0;
+//        for (int i =0; i < image.getPixels().length; i+=3) {
+//            double[] pixel = Arrays.copyOfRange(image.getPixels(), i, i+3);
+//            for (int j = 0; j < pixel.length; j++) {
+//                if (j == (channel - 1)) {
+//                    newPixels[pointer++] = pixel[j];
+//                }
+//            }
+//        }
+//        image.setPixels(newPixels);
+//        image.setType(ImageTypes.P5);
+//    }
+
     public static void applyFilter(PNM image, int channel) {
         if (channel < 1 || channel > 3) {
             throw FilterException.invalidFilterNumber();
         }
 
-        var newPixels = new double[image.getPixels().length / 3];
-        int pointer = 0;
+        var newPixels = image.getPixels();
         for (int i =0; i < image.getPixels().length; i+=3) {
             double[] pixel = Arrays.copyOfRange(image.getPixels(), i, i+3);
+            var trueChannel = pixel[channel - 1];
             for (int j = 0; j < pixel.length; j++) {
-                if (j == (channel - 1)) {
-                    newPixels[pointer++] = pixel[j];
-                }
+                newPixels[i+j] = trueChannel;
             }
         }
         image.setPixels(newPixels);
-        image.setType(ImageTypes.P5);
+    }
+
+    public static void applyFilterBW(PNM image, int channel) {
+        if (channel < 1 || channel > 3) {
+            throw FilterException.invalidFilterNumber();
+        }
+        var newPixels = image.getPixels();
+        for (int i =0; i < image.getPixels().length; i+=3) {
+            double[] pixel = Arrays.copyOfRange(image.getPixels(), i, i+3);
+            var trueChannel = 0;
+            for (int j = 0; j < pixel.length; j++) {
+                trueChannel += pixel[j];
+            }
+            trueChannel /=3;
+
+            for (int j = 0; j < pixel.length; j++) {
+                newPixels[i+j] = trueChannel;
+            }
+        }
+        image.setPixels(newPixels);
     }
 
     public static void applyFilterYCbCr(PNM image, int channel) {

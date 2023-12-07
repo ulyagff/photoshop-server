@@ -31,7 +31,10 @@ public class FilterService {
         ) {
             OneChannelFilter.applyFilterYCbCr(image, channel);
         }
-        var imageRgb = converterService.convertToNewColorSpace(image, ColorSpace.RGB);
-        return imageRgb.extractBytesForShow();
+        converterService.convertToNewColorSpace(image, ColorSpace.RGB);
+        if (ImageService.getInstance().getImage().getColorSpace() == ColorSpace.YCoCg) {
+            OneChannelFilter.applyFilterBW(image, channel);
+        }
+        return image.extractBytesForShow();
     }
 }
